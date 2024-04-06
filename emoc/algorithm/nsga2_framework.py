@@ -1,7 +1,7 @@
 from emoc.algorithm import Algorithm
 from emoc.operator import TournamentByRank, SBX, PolynomialMutation
 from emoc.operator import FloatRandomSampling, NonDominatedSort
-from emoc.core import constants
+from emoc.utils import constants
 
 
 class DistanceInfo:

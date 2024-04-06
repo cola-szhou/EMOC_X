@@ -1,4 +1,5 @@
-from emoc import EMOC
+import EMOC
+
 
 def HV(pop, ref_point):
     """

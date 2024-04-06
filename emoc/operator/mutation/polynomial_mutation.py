@@ -1,4 +1,4 @@
-from emoc import EMOC
+import EMOC
 
 # from emoc.operator import Operator
 from emoc.problem import Problem

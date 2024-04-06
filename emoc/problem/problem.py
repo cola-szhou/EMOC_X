@@ -1,4 +1,6 @@
-from emoc import EMOC
+import EMOC
+
+from emoc.core.variable import EncodingType
 
 
 class Problem(EMOC.Problem):
@@ -13,15 +15,9 @@ class Problem(EMOC.Problem):
         pass
 
     def GetType(self, type):
-        if type == "REAL":
-            return EMOC.EncodingType.REAL
-        elif type == "BINARY":
-            return EMOC.EncodingType.BINARY
-        elif type == "INTEGER":
-            return EMOC.EncodingType.INTEGER
-        elif type == "PERMUTATION":
-            return EMOC.EncodingType.PERMUTATION
-        elif type == "MIXED":
-            return EMOC.EncodingType.MIXED
+        if type in EncodingType:
+            return EncodingType[type]
         else:
-            print("Error Type, please select from REAL, BINARY and PERMUTATION")
+            print(
+                "Error Type, please select from REAL, BINARY, INTEGER, CATEGORICAL, PERMUTATION or MIXED"
+            )

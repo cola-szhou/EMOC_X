@@ -1,5 +1,5 @@
 from emoc.utils.utility import CheckDominance, CheckDominanceWithConstraint
-from emoc import EMOC
+import EMOC
 
 
 def NonDominatedSort(pop, pop_num, obj_num, is_consider_cons=False):

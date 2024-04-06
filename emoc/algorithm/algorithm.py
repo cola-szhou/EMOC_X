@@ -1,6 +1,5 @@
 from emoc.core.global_information import Global
 import time
-import os
 
 
 class Algorithm:

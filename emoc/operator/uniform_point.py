@@ -1,4 +1,5 @@
-from emoc import EMOC
+import EMOC
+
 
 def UniformPoint(num, obj_num):
     weight_num = num

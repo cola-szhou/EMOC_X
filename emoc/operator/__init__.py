@@ -24,4 +24,4 @@ from .mutation.swap_mutation import SwapMutation
 from .sampling.rnd import FloatRandomSampling
 
 from .nd_sort import NonDominatedSort
-from .uniform_point import UniformPoint
+from emoc.operator.uniform_point import UniformPoint

@@ -1,4 +1,4 @@
-from emoc import EMOC
+import EMOC
 
 
 class NSGA2:

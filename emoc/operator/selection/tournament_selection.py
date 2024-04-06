@@ -1,4 +1,4 @@
-from emoc import EMOC
+import EMOC
 import random
 
 # from emoc.operator import Operator

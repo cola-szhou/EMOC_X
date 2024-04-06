@@ -8,8 +8,10 @@ import matplotlib.pyplot as plt
 # from emoc.problem import Problem
 # from emoc.algorithm import Algorithm
 from emoc.core import Global
-from emoc.utils.utility import LoadPFData
-from emoc.metric import *
+from emoc.utils import LoadPFData
+from emoc.metrics import *
+import EMOC
+
 
 # class EMOC_Manager:
 #     """
@@ -365,235 +367,6 @@ from emoc.metric import *
 #         fig.legend(handles, labels, loc='upper right', bbox_to_anchor = (1.12, 0.8))
 #         plt.show()
 
-#     def draw_pf(
-#             self,
-#             algorithm,
-#             problem,
-#             run = 0,
-#             gen = None,
-#             point_size = 4 ,
-#             marker_type = 'circle',
-#             line_width = 1,
-#             point_color = 'blue',
-#             x_label = 'F1',
-#             y_label = 'F2',
-#             z_label = 'F3',
-#             figure_width = 550,
-#             figure_height = 500,
-#             tick_font_size = 12,
-#             label_font_size = 14,
-#             axis_line_color = 'black',
-#             background_color = 'white',):
-
-#         if algorithm not in self.algorithm_names:
-#             raise ValueError(
-#                 f"The named algorithm {algorithm} was not evaluated, "
-#                 f"available algorithms are {self.algorithm_names}"
-#             )
-
-#         if problem not in self.problem_names:
-#             raise ValueError(
-#                 f"The named algorithm {problem} was not evaluated, "
-#                 f"available algorithms are {self.problem_names}"
-#             )
-
-#         if run >= self.n_runs:
-#             raise ValueError(
-#                 f"There are a total of {self.n_runs}, "
-#                 f"but run number {run} is passed."
-#             )
-
-#         gen = self.n_gen if gen == None else gen
-#         pf = np.array(self.results[(algorithm, problem)][run][gen]["PF"])
-#         n_objs = pf.shape[1]
-#         data_pf = pd.DataFrame(pf, columns=[f"F{i + 1}" for i in range(n_objs)])
-
-#         if n_objs == 3:
-#             self._draw_pf_3d(
-#                 data_pf,
-#                 point_size = point_size ,
-#                 marker_type = marker_type,
-#                 line_width = line_width,
-#                 point_color = point_color,
-#                 x_label = x_label,
-#                 y_label = y_label,
-#                 z_label = z_label,
-#                 figure_width = figure_width,
-#                 figure_height = figure_height,
-#                 tick_font_size = tick_font_size,
-#                 label_font_size = label_font_size,
-#                 axis_line_color = axis_line_color,
-#                 background_color = background_color,
-#             )
-
-#         elif n_objs == 2:
-#             self._draw_pf_2d(
-#                 data_pf,
-#                 point_size = point_size ,
-#                 marker_type = marker_type,
-#                 line_width = line_width,
-#                 point_color = point_color,
-#                 x_label = x_label,
-#                 y_label = y_label,
-#                 figure_width = figure_width,
-#                 figure_height = figure_height,
-#                 tick_font_size = tick_font_size,
-#                 label_font_size = label_font_size,
-#                 axis_line_color = axis_line_color,
-#             )
-
-#         else:
-#             raise NotImplementedError(
-#                 "Currently only PF of n_dim = {2,3} can be visualized."
-#             )
-
-#     def _draw_pf_3d(
-#             self,
-#             data,
-#             point_size = 4 ,
-#             marker_type = 'circle',
-#             line_width = 1,
-#             point_color = 'blue',
-#             x_label = 'F1',
-#             y_label = 'F2',
-#             z_label = 'F3',
-#             figure_width = 550,
-#             figure_height = 500,
-#             tick_font_size = 12,
-#             label_font_size = 14,
-#             axis_line_color = 'black',
-#             background_color = 'white',
-#         ):
-
-#         trace = go.Scatter3d(
-#             x = data["F1"],
-#             y = data["F2"],
-#             z = data["F3"],
-#             mode = 'markers',
-#             marker = dict(
-#                 size = point_size,
-#                 symbol = marker_type,
-#                 line = dict(
-#                     width = line_width,
-#                     color = axis_line_color
-#                 ),
-#                 color = point_color
-#             )
-#         )
-
-#         layout = go.Layout(
-#             title = f'Pareto Front',
-#             scene = dict(
-#                 xaxis = dict(
-#                     title = x_label,
-#                     titlefont = dict(size = label_font_size, color = axis_line_color),
-#                     tickfont = dict(size = tick_font_size, color = axis_line_color),
-#                     showgrid = True,
-#                     gridcolor = 'darkgray',
-#                     showbackground = False,
-#                 ),
-#                 yaxis = dict(
-#                     title = y_label,
-#                     titlefont = dict(size = label_font_size, color = axis_line_color),
-#                     tickfont = dict(size = tick_font_size, color = axis_line_color),
-#                     showgrid = True,
-#                     gridcolor = 'darkgray',
-#                     showbackground = False,
-#                 ),
-#                 zaxis = dict(
-#                     title = z_label,
-#                     titlefont = dict(size = label_font_size, color = axis_line_color),
-#                     tickfont = dict(size = tick_font_size, color = axis_line_color),
-#                     showgrid = True,
-#                     gridcolor ='darkgray',
-#                     showbackground = False,
-#                 ),
-#                 camera = dict(
-#                     eye = dict(x = 1.5, y = 1.5, z = 1.5)
-#                 )
-#             ),
-#             autosize = False,
-#             width = figure_width,
-#             height = figure_height,
-#             margin = dict(l = 50, r = 50, b = 50, t = 50),
-#             paper_bgcolor = background_color,
-#         )
-
-#         fig = go.Figure(data = [trace], layout = layout)
-#         fig.show()
-
-#     def _draw_pf_2d(
-#             self,
-#             data,
-#             point_size = 10,
-#             marker_type = 'circle',
-#             line_width = 1,
-#             point_color = 'blue',
-#             x_label = 'F1',
-#             y_label = 'F2',
-#             figure_width = 550,
-#             figure_height = 500,
-#             tick_font_size = 16,
-#             label_font_size = 20,
-#             axis_line_color = 'black',
-#             axis_line_width = 1.5,
-#             tick_line_width = 1.5
-#         ):
-
-#         trace = go.Scatter(
-#             x = data["F1"],
-#             y = data["F2"],
-#             mode = 'markers',
-#             marker = dict(
-#                 size = point_size,
-#                 symbol = marker_type,
-#                 line = dict(
-#                     width = line_width,
-#                     color = axis_line_color
-#                 ),
-#                 color = point_color
-#             )
-#         )
-
-#         layout = go.Layout(
-#             title = f'Pareto Front',
-#             xaxis = dict(
-#                 title = x_label,
-#                 showline = True,
-#                 linecolor = 'black',
-#                 linewidth = axis_line_width,
-#                 color = 'black',
-#                 showgrid = True,
-#                 mirror = True,
-#                 ticks = 'inside',
-#                 tickwidth = tick_line_width,
-#                 tickfont = dict(size = tick_font_size),
-#                 title_font = dict(size = label_font_size),
-#             ),
-#             yaxis = dict(
-#                 title = y_label,
-#                 showline = True,
-#                 linecolor = 'black',
-#                 linewidth = axis_line_width,
-#                 color = 'black',
-#                 showgrid = True,
-#                 mirror = True,
-#                 ticks = 'inside',
-#                 tickwidth = tick_line_width,
-#                 tickfont = dict(size = tick_font_size),
-#                 title_font = dict(size = label_font_size),
-#             ),
-#             plot_bgcolor = 'white',
-#             paper_bgcolor = 'white',
-#             width = figure_width,
-#             height = figure_height,
-#             font = dict(
-#                 color = 'black'
-#             )
-#         )
-
-#         fig = go.Figure(data = [trace], layout = layout)
-#         fig.show()
 
 # class EMOC_Manager_Exp:
 #     """
@@ -744,6 +517,7 @@ from emoc.metric import *
 class EMOC_Manager:
     # TO-DO: how to deal with metrics? and our results have recorded in self.global_, not results_
     def __init__(self, population_num=100, max_evaluation=25000, run=1):
+        EMOC.randomize()
         self.population_num_ = population_num
         self.max_evaluation_ = max_evaluation
         self.run_ = run
@@ -764,9 +538,11 @@ class EMOC_Manager:
             (problems.name, problems) if not isinstance(problems, list) else problems
         ]
         self.algorithms_ = [
-            (algorithms.name, algorithms)
-            if not isinstance(algorithms, list)
-            else algorithms
+            (
+                (algorithms.name, algorithms)
+                if not isinstance(algorithms, list)
+                else algorithms
+            )
         ]
         self.metrics_ = (
             [("metric", self.metrics)]
@@ -796,7 +572,7 @@ class EMOC_Manager:
         problem,
         metrics,
         output_interval: int = None,
-        pf_path: str = None,
+        pf_path: Optional[str] = None,
     ):
         """
         Function for performing single run.
@@ -819,14 +595,13 @@ class EMOC_Manager:
         )
 
     def _optimize_and_evaluate(
-        self, alg_name: str, alg, prob_name: str, prob, pf_path=None
+        self, alg_name: str, alg, prob_name: str, prob, pf_path: Optional[str] = None
     ):
         global_ = Global()
         global_.SetParam(
             prob.dec_num_,
             prob.obj_num_,
-            prob.lower_bound_,
-            prob.upper_bound_,
+            prob.dec_space_,
             self.population_num_,
             self.output_interval,
             self.max_evaluation_,
@@ -835,45 +610,10 @@ class EMOC_Manager:
         alg.runtime_ = 0.0
         alg.Solve(prob, self.global_[-1])
 
-        # 优化结果已经存在self.global_[-1].pop_中，建议在画图表的时候再转换数据结构
         # Load the PF data
-        if pf_path != None:
-            pf = LoadPFData(pf_path)
-        else:
-            problem_name = prob_name
-            count = 0
-            for i in range(len(problem_name) - 1, -1, -1):
-                if "0" <= problem_name[i] <= "9":
-                    count += 1
-                else:
-                    break
-
-            # 2. 创建去掉末尾数字的新字符串
-            temp_problemname = problem_name[:-count] if count > 0 else problem_name
-
-            # 3. 将 temp_problemname 中的字母转换为小写，跳过数字和下划线
-            temp_problemname = "".join(
-                c.lower() if not (c.isdigit() or c == "_") else c
-                for c in temp_problemname
-            )
-
-            # 4. 将 problem_name 中的字母转换为小写，跳过数字和下划线
-            problem_name = "".join(
-                c.lower() if not (c.isdigit() or c == "_") else c for c in problem_name
-            )
-
-            pf_path = (
-                "emoc/pf_data/"
-                + temp_problemname
-                + "/"
-                + problem_name
-                + "_"
-                + str(prob.obj_num_)
-                + "D.pf"
-            )
-            pf = LoadPFData(pf_path)
-            if pf == []:
-                return
+        pf = LoadPFData(pf_path, prob.name, prob.obj_num_)
+        if pf == []:
+            return
         metric_history = {}
         igd_history = []
         igd_plus_history = []
@@ -883,11 +623,11 @@ class EMOC_Manager:
         spacing_history = []
 
         for i in range(len(self.global_[-1].record_)):
-            igd = CalculateIGD(pf, self.global_[-1].record_[i])
-            igd_plus = CalculateIGDPlus(pf, self.global_[-1].record_[i])
-            gd = CalculateGD(pf, self.global_[-1].record_[i])
-            gd_plus = CalculateGDPlus(pf, self.global_[-1].record_[i])
-            spacing = CalculateSpacing(self.global_[-1].record_[i])
+            igd = CalculateIGD(self.global_[-1].record_[i].pop_, pf)
+            igd_plus = CalculateIGDPlus(self.global_[-1].record_[i].pop_, pf)
+            gd = CalculateGD(self.global_[-1].record_[i].pop_, pf)
+            gd_plus = CalculateGDPlus(self.global_[-1].record_[i].pop_, pf)
+            spacing = CalculateSpacing(self.global_[-1].record_[i].pop_)
             # hv = CalculateHV(pf, self.global_[-1].record_[i])
             igd_history.append(igd)
             igd_plus_history.append(igd_plus)

@@ -1,4 +1,4 @@
-from emoc import EMOC
+import EMOC
 
 
 def BitFlipMutation(ind, mu_pro):

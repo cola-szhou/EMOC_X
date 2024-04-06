@@ -1,4 +1,5 @@
-from emoc import EMOC
+import EMOC
+
 
 def SwapMutation(ind, mu_pro):
     mutation_param = EMOC.MutationParameter()

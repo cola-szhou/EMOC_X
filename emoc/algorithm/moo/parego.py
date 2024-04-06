@@ -1,8 +1,9 @@
 import os
 from emoc.algorithm import Algorithm
 import GPy
+from emoc.utils import constants
 import numpy as np
-from emoc.core import constants, Individual
+from emoc.core import Individual
 from emoc.utils.utility import CalInverseChebycheff
 from emoc.operator import UniformPoint
 from GPyOpt.methods import BayesianOptimization
